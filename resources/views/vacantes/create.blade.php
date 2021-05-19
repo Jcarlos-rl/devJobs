@@ -65,10 +65,11 @@
             <input type="hidden" name="descripcion" id="descripcion">
         </div>
 
-        <div class="mb-5">
+        <div class="mb-5 text-center">
             <label for="descripcion" class="block text-gray-700 text-sm mb-2">Imagen vacante:</label>
-            <div id="dropzoneDevJobs" class="dropzone rounded bg-gray-100">
+            <div id="dropzoneDevJobs" class="dropzone rounded bg-gray-100 mb-3">
             </div>
+            <span id="errorImage" class="text-red-500"></span>
         </div>
 
         <button type="submit" class="bg-gray-800 w-full hover:bg-teal-700 text-gray-100 p-3 focus:outline-none focus:shadow-outline uppercase mb-3">
@@ -100,9 +101,29 @@
             })
 
             const dropzoneDevJobs = new Dropzone('#dropzoneDevJobs', {
-                url: "/vacantes/imagen"
+                url: "/vacantes/imagen",
+                dictDefaultMessage: 'Caga tu archivo',
+                acceptedFiles: '.png,.jpg,.jpeg,.gif,.bmp',
+                addRemoveLinks: true,
+                maxFiles: 1,
+                dictRemoveFile: 'Eliminar archivo',
+                headers: {
+                    'X-CSRF-TOKEN' : document.querySelector('meta[name=csrf-token]').content
+                },
+                success: function(file,resp){
+                    document.getElementById('errorImage').innerText = '';
+                },
+                error: function(file, resp){
+                    document.getElementById('errorImage').innerText = 'Formato no válido';
+                },
+                maxfilesexceeded: function(file){
+                    console.log(this.files);
+                    if(this.files[1] != null){
+                        this.removeFile(this.files[0]);
+                        //this.addFile(file);
+                    }
+                }
             })
-
         })
     </script>
 @endsection

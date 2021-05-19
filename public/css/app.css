@@ -31904,6 +31904,15 @@ video {
   color: #666;
 }
 
+.dropzone .dz-remove {
+  margin-top: 5px;
+  padding: 5px 0px !important;
+  color: #DC2626;
+  text-decoration: none !important;
+  background: #FECACA;
+  border-radius: 5px;
+}
+
 @media (min-width: 640px){
   .sm\:container{
     width: 100%;
