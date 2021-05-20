@@ -8,6 +8,7 @@ use App\Models\Categoria;
 use App\Models\Ubicacion;
 use App\Models\Experiencia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class VacanteController extends Controller
 {
@@ -48,7 +49,30 @@ class VacanteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'titulo'      => 'required|min:8',
+            'categoria'   => 'required',
+            'experiencia' => 'required',
+            'ubicacion'   => 'required',
+            'salario'     => 'required',
+            'descripcion' => 'required|min:50',
+            'imagen'      => 'required',
+            'skills'      => 'required'
+        ]);
+
+        auth()->user()->vacantes()->create([
+            'titulo'         => $data['titulo'],
+            'imagen'         => $data['imagen'],
+            'descripcion'    => $data['descripcion'],
+            'skills'         => $data['skills'],
+            'categoria_id'   => $data['categoria'],
+            'experiencia_id' => $data['experiencia'],
+            'ubicacion_id'   => $data['ubicacion'],
+            'salario_id'     => $data['salario']
+        ]);
+
+        return redirect()->action([VacanteController::class, 'index']);
+
     }
 
     /**
@@ -99,5 +123,21 @@ class VacanteController extends Controller
     public function imagen(Request $request)
     {
         $imagen = $request->file('file');
+        $nombreImagen = time().'.'.$imagen->extension();
+        $imagen->move(public_path('storage/vacantes'), $nombreImagen);
+        return response()->json(['correcto' => $nombreImagen]);
+    }
+
+    public function borrarimagen(Request $request)
+    {
+        if($request->ajax()){
+            $imagen = $request->get('imagen');
+
+            if(File::exists('storage/vacantes/'.$imagen)){
+                File::delete('storage/vacantes/'.$imagen);
+            }
+
+            return response('Imagen Eliminada', 200);
+        }
     }
 }
