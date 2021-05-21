@@ -12,18 +12,12 @@ use Illuminate\Support\Facades\File;
 
 class VacanteController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified']);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return view('vacantes.index');
+        $vacantes =  Vacante::where('user_id', auth()->user()->id)->simplePaginate(3);
+
+        return view('vacantes.index', compact('vacantes'));
     }
 
     /**
@@ -83,7 +77,7 @@ class VacanteController extends Controller
      */
     public function show(Vacante $vacante)
     {
-        //
+        return view('vacantes.show', compact('vacante'));
     }
 
     /**

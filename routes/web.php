@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VacanteController;
+use App\Http\Controllers\CandidatoController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 /*
@@ -25,11 +26,18 @@ Auth::routes(['verify' == true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/vacantes', [VacanteController::class, 'index'])->name('vacantes.index');
-Route::get('/vacantes/create', [VacanteController::class, 'create'])->name('vacantes.create');
-Route::post('/vacantes/imagen', [VacanteController:: class, 'imagen'])->name('vacantes.imagen');
-Route::post('/vacantes/borrarimagen', [VacanteController:: class, 'borrarimagen'])->name('vacantes.borrarimagen');
-Route::post('/vacantes', [VacanteController::class, 'store'])->name('vacantes.store');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/vacantes', [VacanteController::class, 'index'])->name('vacantes.index');
+    Route::get('/vacantes/create', [VacanteController::class, 'create'])->name('vacantes.create');
+    Route::post('/vacantes', [VacanteController::class, 'store'])->name('vacantes.store');
+
+    Route::post('/vacantes/imagen', [VacanteController:: class, 'imagen'])->name('vacantes.imagen');
+    Route::post('/vacantes/borrarimagen', [VacanteController:: class, 'borrarimagen'])->name('vacantes.borrarimagen');
+});
+
+Route::get('/vacantes/{vacante}', [VacanteController::class, 'show'])->name('vacantes.show');
+
+Route::post('/candidatos/store', [CandidatoController::class, 'store'])->name('candidatos.store');
 
 
 
