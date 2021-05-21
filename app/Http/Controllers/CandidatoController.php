@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vacante;
 use App\Models\Candidato;
 use Illuminate\Http\Request;
+use App\Notifications\NuevoCandidato;
 
 class CandidatoController extends Controller
 {
@@ -77,7 +78,12 @@ class CandidatoController extends Controller
             'cv'     => $nombreArchivo
         ]);
 
-        return back();
+        $reclutador = $vacante->reclutador;
+
+        $reclutador->notify( new NuevoCandidato() );
+
+
+        return back()->with('estado', 'Tus datos se enviaron correctamente.');
 
     }
 
