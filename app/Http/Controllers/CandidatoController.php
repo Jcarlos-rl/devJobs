@@ -14,9 +14,16 @@ class CandidatoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $idVacante = $request->route('vacante');
+
+        $vacante = Vacante::findOrFail($idVacante);
+
+        $this->authorize('view', $vacante);
+
+        return view('candidatos.index', compact('vacante'));
+
     }
 
     /**
@@ -80,7 +87,7 @@ class CandidatoController extends Controller
 
         $reclutador = $vacante->reclutador;
 
-        $reclutador->notify( new NuevoCandidato() );
+        $reclutador->notify( new NuevoCandidato( $vacante->titulo, $vacante->id ) );
 
 
         return back()->with('estado', 'Tus datos se enviaron correctamente.');

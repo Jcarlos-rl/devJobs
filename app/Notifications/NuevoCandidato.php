@@ -16,9 +16,10 @@ class NuevoCandidato extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($vacante, $idVacante)
     {
-        //
+        $this->vacante = $vacante;
+        $this->idVacante = $idVacante;
     }
 
     /**
@@ -29,7 +30,7 @@ class NuevoCandidato extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -42,8 +43,17 @@ class NuevoCandidato extends Notification
     {
         return (new MailMessage)
                     ->line('Haz recibido un nuevo candidato en tu vacante.')
+                    ->line('La vacante es: '.$this->vacante)
                     ->action('Visita devJobs', url('/'))
                     ->line('Gracias por utilizar devJobs!');
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'vacante' => $this->vacante,
+            'idVacante' => $this->idVacante
+        ];
     }
 
     /**

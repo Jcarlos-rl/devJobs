@@ -2,8 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InicioController;
 use App\Http\Controllers\VacanteController;
 use App\Http\Controllers\CandidatoController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\NotificacionesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
@@ -18,27 +21,31 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' == true]);
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/vacantes', [VacanteController::class, 'index'])->name('vacantes.index');
     Route::get('/vacantes/create', [VacanteController::class, 'create'])->name('vacantes.create');
     Route::post('/vacantes', [VacanteController::class, 'store'])->name('vacantes.store');
 
-    Route::post('/vacantes/imagen', [VacanteController:: class, 'imagen'])->name('vacantes.imagen');
-    Route::post('/vacantes/borrarimagen', [VacanteController:: class, 'borrarimagen'])->name('vacantes.borrarimagen');
+    Route::post('/vacantes/imagen', [VacanteController::class, 'imagen'])->name('vacantes.imagen');
+    Route::post('/vacantes/borrarimagen', [VacanteController::class, 'borrarimagen'])->name('vacantes.borrarimagen');
+    Route::post('/vacantes/{vacante}', [VacanteController::class, 'estado'])->name('vacantes.estado');
+    Route::delete('/vacantes/{vacante}', [VacanteController::class, 'destroy'])->name('vacantes.destroy');
+    Route::get('/vacantes/{vacante}/edit', [VacanteController::class, 'edit'])->name('vacantes.edit');
+    Route::put('/vacantes/{vacante}', [VacanteController::class, 'update'])->name('vacantes.update');
+
+    Route::get('/notificaciones', NotificacionesController::class)->name('notificaciones');
 });
 
-Route::get('/vacantes/{vacante}', [VacanteController::class, 'show'])->name('vacantes.show');
+Route::get('/', InicioController::class)->name('inicio');
 
+Route::get('/categorias/{categoria}', [CategoriaController::class, 'show'])->name('categorias.show');
+
+Route::get('/candidatos/{vacante}', [CandidatoController::class, 'index'])->name('candidatos.index');
 Route::post('/candidatos/store', [CandidatoController::class, 'store'])->name('candidatos.store');
 
+Route::get('/vacantes/{vacante}', [VacanteController::class, 'show'])->name('vacantes.show');
 
 
 
