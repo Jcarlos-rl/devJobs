@@ -45,7 +45,9 @@ Route::get('/categorias/{categoria}', [CategoriaController::class, 'show'])->nam
 Route::get('/candidatos/{vacante}', [CandidatoController::class, 'index'])->name('candidatos.index');
 Route::post('/candidatos/store', [CandidatoController::class, 'store'])->name('candidatos.store');
 
+Route::get('/busqueda/buscar', [VacanteController::class, 'resultados'])->name('vacantes.resultados');
 Route::get('/vacantes/{vacante}', [VacanteController::class, 'show'])->name('vacantes.show');
+Route::post('/busqueda/buscar', [VacanteController::class, 'buscar'])->name('vacantes.buscar');
 
 
 
