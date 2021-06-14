@@ -23,7 +23,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Auth::routes(['verify' == true]);
 
-
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/vacantes', [VacanteController::class, 'index'])->name('vacantes.index');
     Route::get('/vacantes/create', [VacanteController::class, 'create'])->name('vacantes.create');
     Route::post('/vacantes', [VacanteController::class, 'store'])->name('vacantes.store');
@@ -36,7 +36,7 @@ Auth::routes(['verify' == true]);
     Route::put('/vacantes/{vacante}', [VacanteController::class, 'update'])->name('vacantes.update');
 
     Route::get('/notificaciones', NotificacionesController::class)->name('notificaciones');
-
+});
 
 Route::get('/', InicioController::class)->name('inicio');
 
