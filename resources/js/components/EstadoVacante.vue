@@ -33,18 +33,9 @@
                 }
 
                 /* axios.post(`/vacantes/${this.vacanteId}`, params) */
-                fetch(`/vacantes/${this.vacanteId}`, {
-                    method: 'POST',
-                    body: params
-                })
-
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                }
-                /* axios.post(`/vacantes/${this.vacanteId}`, params)
+                axios.post(`/api/vacantes/${this.vacanteId}`, params)
                     .then(resp => console.log(resp))
-                    .catch(err => console.log(err)) */
+                    .catch(err => console.log(err))
             },
             claseEstadoVacante(){
                 return this.estadoVacanteData === 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'

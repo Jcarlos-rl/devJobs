@@ -1930,7 +1930,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       /* axios.post(`/vacantes/${this.vacanteId}`, params) */
 
-      axios.post("/vacantes/".concat(this.vacanteId), params).then(function (resp) {
+      axios.post("/api/vacantes/".concat(this.vacanteId), params).then(function (resp) {
         return console.log(resp);
       })["catch"](function (err) {
         return console.log(err);
