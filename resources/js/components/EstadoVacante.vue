@@ -33,7 +33,7 @@
                 }
 
                 /* axios.post(`/vacantes/${this.vacanteId}`, params) */
-                axios.post(`/api/vacantes/${this.vacanteId}`, params)
+                axios.post(`/vacantes/${this.vacanteId}`, params)
                     .then(resp => console.log(resp))
                     .catch(err => console.log(err))
             },
